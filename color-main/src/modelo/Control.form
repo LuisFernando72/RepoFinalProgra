@@ -250,6 +250,9 @@
                   </Border>
                 </Property>
               </Properties>
+              <Events>
+                <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="itemCopiarActionPerformed"/>
+              </Events>
             </MenuItem>
             <MenuItem class="javax.swing.JMenuItem" name="itemPegar">
               <Properties>
@@ -270,53 +273,9 @@
                 </Property>
                 <Property name="text" type="java.lang.String" value="Pegar"/>
               </Properties>
-            </MenuItem>
-            <MenuItem class="javax.swing.JMenuItem" name="itemDesacher">
-              <Properties>
-                <Property name="accelerator" type="javax.swing.KeyStroke" editor="org.netbeans.modules.form.editors.KeyStrokeEditor">
-                  <KeyStroke key="Ctrl+Z"/>
-                </Property>
-                <Property name="background" type="java.awt.Color" editor="org.netbeans.beaninfo.editors.ColorEditor">
-                  <Color blue="ff" green="ff" red="cc" type="rgb"/>
-                </Property>
-                <Property name="font" type="java.awt.Font" editor="org.netbeans.beaninfo.editors.FontEditor">
-                  <Font name="Dialog" size="12" style="3"/>
-                </Property>
-                <Property name="foreground" type="java.awt.Color" editor="org.netbeans.beaninfo.editors.ColorEditor">
-                  <Color blue="0" green="0" red="0" type="rgb"/>
-                </Property>
-                <Property name="icon" type="javax.swing.Icon" editor="org.netbeans.modules.form.editors2.IconEditor">
-                  <Image iconType="3" name="/Imagenes/undo.png"/>
-                </Property>
-                <Property name="text" type="java.lang.String" value="Desacher"/>
-                <Property name="border" type="javax.swing.border.Border" editor="org.netbeans.modules.form.editors2.BorderEditor">
-                  <Border info="org.netbeans.modules.form.compat2.border.LineBorderInfo">
-                    <LineBorder roundedCorners="true">
-                      <Color PropertyName="color" blue="ff" green="ff" red="ff" type="rgb"/>
-                    </LineBorder>
-                  </Border>
-                </Property>
-              </Properties>
-            </MenuItem>
-            <MenuItem class="javax.swing.JMenuItem" name="itemEliminar">
-              <Properties>
-                <Property name="accelerator" type="javax.swing.KeyStroke" editor="org.netbeans.modules.form.editors.KeyStrokeEditor">
-                  <KeyStroke key="Ctrl+T"/>
-                </Property>
-                <Property name="background" type="java.awt.Color" editor="org.netbeans.beaninfo.editors.ColorEditor">
-                  <Color blue="ff" green="ff" red="ff" type="rgb"/>
-                </Property>
-                <Property name="font" type="java.awt.Font" editor="org.netbeans.beaninfo.editors.FontEditor">
-                  <Font name="Dialog" size="12" style="3"/>
-                </Property>
-                <Property name="foreground" type="java.awt.Color" editor="org.netbeans.beaninfo.editors.ColorEditor">
-                  <Color blue="0" green="0" red="0" type="rgb"/>
-                </Property>
-                <Property name="icon" type="javax.swing.Icon" editor="org.netbeans.modules.form.editors2.IconEditor">
-                  <Image iconType="3" name="/Imagenes/trash.png"/>
-                </Property>
-                <Property name="text" type="java.lang.String" value="Eliminar"/>
-              </Properties>
+              <Events>
+                <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="itemPegarActionPerformed"/>
+              </Events>
             </MenuItem>
             <MenuItem class="javax.swing.JMenuItem" name="itemReemplazar">
               <Properties>
@@ -400,114 +359,6 @@
             </MenuItem>
           </SubComponents>
         </Menu>
-        <Menu class="javax.swing.JMenu" name="jMenu4">
-          <Properties>
-            <Property name="background" type="java.awt.Color" editor="org.netbeans.beaninfo.editors.ColorEditor">
-              <Color blue="99" green="99" red="0" type="rgb"/>
-            </Property>
-            <Property name="foreground" type="java.awt.Color" editor="org.netbeans.beaninfo.editors.ColorEditor">
-              <Color blue="0" green="0" red="0" type="rgb"/>
-            </Property>
-            <Property name="icon" type="javax.swing.Icon" editor="org.netbeans.modules.form.editors2.IconEditor">
-              <Image iconType="3" name="/Imagenes/simple-data-format.png"/>
-            </Property>
-            <Property name="text" type="java.lang.String" value="Formato"/>
-            <Property name="font" type="java.awt.Font" editor="org.netbeans.beaninfo.editors.FontEditor">
-              <Font name="Dialog" size="15" style="1"/>
-            </Property>
-            <Property name="iconTextGap" type="int" value="12"/>
-          </Properties>
-          <SubComponents>
-            <MenuItem class="javax.swing.JMenuItem" name="jMenuItem14">
-              <Properties>
-                <Property name="background" type="java.awt.Color" editor="org.netbeans.beaninfo.editors.ColorEditor">
-                  <Color blue="ff" green="ff" red="cc" type="rgb"/>
-                </Property>
-                <Property name="foreground" type="java.awt.Color" editor="org.netbeans.beaninfo.editors.ColorEditor">
-                  <Color blue="0" green="0" red="0" type="rgb"/>
-                </Property>
-                <Property name="text" type="java.lang.String" value="Formato"/>
-              </Properties>
-            </MenuItem>
-          </SubComponents>
-        </Menu>
-        <Menu class="javax.swing.JMenu" name="jMenu5">
-          <Properties>
-            <Property name="background" type="java.awt.Color" editor="org.netbeans.beaninfo.editors.ColorEditor">
-              <Color blue="99" green="99" red="0" type="rgb"/>
-            </Property>
-            <Property name="foreground" type="java.awt.Color" editor="org.netbeans.beaninfo.editors.ColorEditor">
-              <Color blue="0" green="0" red="0" type="rgb"/>
-            </Property>
-            <Property name="icon" type="javax.swing.Icon" editor="org.netbeans.modules.form.editors2.IconEditor">
-              <Image iconType="3" name="/Imagenes/lupa.png"/>
-            </Property>
-            <Property name="text" type="java.lang.String" value="Ver"/>
-            <Property name="font" type="java.awt.Font" editor="org.netbeans.beaninfo.editors.FontEditor">
-              <Font name="Dialog" size="15" style="1"/>
-            </Property>
-            <Property name="iconTextGap" type="int" value="12"/>
-          </Properties>
-          <SubComponents>
-            <Menu class="javax.swing.JMenu" name="jMenu3">
-              <Properties>
-                <Property name="background" type="java.awt.Color" editor="org.netbeans.beaninfo.editors.ColorEditor">
-                  <Color blue="ff" green="ff" red="cc" type="rgb"/>
-                </Property>
-                <Property name="foreground" type="java.awt.Color" editor="org.netbeans.beaninfo.editors.ColorEditor">
-                  <Color blue="0" green="0" red="0" type="rgb"/>
-                </Property>
-                <Property name="text" type="java.lang.String" value="Zoom"/>
-              </Properties>
-              <SubComponents>
-                <MenuItem class="javax.swing.JMenuItem" name="itemAlejar">
-                  <Properties>
-                    <Property name="accelerator" type="javax.swing.KeyStroke" editor="org.netbeans.modules.form.editors.KeyStrokeEditor">
-                      <KeyStroke key="Ctrl+MINUS"/>
-                    </Property>
-                    <Property name="background" type="java.awt.Color" editor="org.netbeans.beaninfo.editors.ColorEditor">
-                      <Color blue="ff" green="ff" red="cc" type="rgb"/>
-                    </Property>
-                    <Property name="foreground" type="java.awt.Color" editor="org.netbeans.beaninfo.editors.ColorEditor">
-                      <Color blue="0" green="0" red="0" type="rgb"/>
-                    </Property>
-                    <Property name="icon" type="javax.swing.Icon" editor="org.netbeans.modules.form.editors2.IconEditor">
-                      <Image iconType="3" name="/Imagenes/zoom-out.png"/>
-                    </Property>
-                    <Property name="text" type="java.lang.String" value="Alejar"/>
-                  </Properties>
-                </MenuItem>
-                <MenuItem class="javax.swing.JMenuItem" name="itemAcercar">
-                  <Properties>
-                    <Property name="accelerator" type="javax.swing.KeyStroke" editor="org.netbeans.modules.form.editors.KeyStrokeEditor">
-                      <KeyStroke key="Ctrl+PLUS"/>
-                    </Property>
-                    <Property name="background" type="java.awt.Color" editor="org.netbeans.beaninfo.editors.ColorEditor">
-                      <Color blue="ff" green="ff" red="cc" type="rgb"/>
-                    </Property>
-                    <Property name="foreground" type="java.awt.Color" editor="org.netbeans.beaninfo.editors.ColorEditor">
-                      <Color blue="0" green="0" red="0" type="rgb"/>
-                    </Property>
-                    <Property name="icon" type="javax.swing.Icon" editor="org.netbeans.modules.form.editors2.IconEditor">
-                      <Image iconType="3" name="/Imagenes/zoom-out.png"/>
-                    </Property>
-                    <Property name="text" type="java.lang.String" value="Acercar"/>
-                    <Property name="border" type="javax.swing.border.Border" editor="org.netbeans.modules.form.editors2.BorderEditor">
-                      <Border info="org.netbeans.modules.form.compat2.border.LineBorderInfo">
-                        <LineBorder roundedCorners="true">
-                          <Color PropertyName="color" blue="ff" green="ff" red="ff" type="rgb"/>
-                        </LineBorder>
-                      </Border>
-                    </Property>
-                  </Properties>
-                  <Events>
-                    <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="itemAcercarActionPerformed"/>
-                  </Events>
-                </MenuItem>
-              </SubComponents>
-            </Menu>
-          </SubComponents>
-        </Menu>
         <Menu class="javax.swing.JMenu" name="jMenu6">
           <Properties>
             <Property name="background" type="java.awt.Color" editor="org.netbeans.beaninfo.editors.ColorEditor">
@@ -539,6 +390,9 @@
                 </Property>
                 <Property name="text" type="java.lang.String" value="Acerca de ayuda"/>
               </Properties>
+              <Events>
+                <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="jMenuItem17ActionPerformed"/>
+              </Events>
             </MenuItem>
             <MenuItem class="javax.swing.JMenuItem" name="jMenuItem18">
               <Properties>
@@ -563,6 +417,9 @@
                   </Border>
                 </Property>
               </Properties>
+              <Events>
+                <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="jMenuItem18ActionPerformed"/>
+              </Events>
             </MenuItem>
           </SubComponents>
         </Menu>
@@ -616,34 +473,48 @@
       <Layout>
         <DimensionLayout dim="0">
           <Group type="103" groupAlignment="0" attributes="0">
-              <Group type="102" alignment="0" attributes="0">
-                  <EmptySpace min="-2" pref="286" max="-2" attributes="0"/>
-                  <Component id="jPanel2" min="-2" max="-2" attributes="0"/>
-                  <EmptySpace max="32767" attributes="0"/>
-              </Group>
-              <Group type="102" alignment="1" attributes="0">
-                  <EmptySpace min="-2" pref="28" max="-2" attributes="0"/>
+              <Group type="102" attributes="0">
                   <Group type="103" groupAlignment="0" attributes="0">
-                      <Group type="102" attributes="0">
-                          <Component id="jPanel3" max="32767" attributes="0"/>
-                          <EmptySpace min="-2" pref="26" max="-2" attributes="0"/>
-                          <Component id="jPanel5" min="-2" max="-2" attributes="0"/>
+                      <Group type="102" alignment="0" attributes="0">
+                          <EmptySpace min="-2" pref="286" max="-2" attributes="0"/>
+                          <Component id="jPanel2" min="-2" max="-2" attributes="0"/>
                       </Group>
-                      <Component id="jScrollPane3" min="-2" pref="1244" max="-2" attributes="0"/>
+                      <Group type="102" alignment="0" attributes="0">
+                          <EmptySpace min="-2" pref="28" max="-2" attributes="0"/>
+                          <Group type="103" groupAlignment="0" max="-2" attributes="0">
+                              <Component id="jScrollPane3" min="-2" pref="1269" max="-2" attributes="0"/>
+                              <Group type="102" alignment="0" attributes="0">
+                                  <Component id="jPanel3" min="-2" pref="922" max="-2" attributes="0"/>
+                                  <EmptySpace type="unrelated" max="-2" attributes="0"/>
+                                  <Component id="jPanel4" min="-2" max="-2" attributes="0"/>
+                                  <EmptySpace max="32767" attributes="0"/>
+                                  <Component id="jPanel5" min="-2" max="-2" attributes="0"/>
+                                  <EmptySpace min="-2" pref="8" max="-2" attributes="0"/>
+                              </Group>
+                          </Group>
+                      </Group>
                   </Group>
-                  <EmptySpace pref="35" max="32767" attributes="0"/>
+                  <EmptySpace pref="13" max="32767" attributes="0"/>
               </Group>
           </Group>
         </DimensionLayout>
         <DimensionLayout dim="1">
           <Group type="103" groupAlignment="0" attributes="0">
               <Group type="102" attributes="0">
-                  <EmptySpace min="10" pref="10" max="-2" attributes="0"/>
-                  <Group type="103" groupAlignment="0" max="-2" attributes="0">
-                      <Component id="jPanel3" max="32767" attributes="0"/>
-                      <Component id="jPanel5" pref="320" max="32767" attributes="0"/>
+                  <Group type="103" groupAlignment="0" attributes="0">
+                      <Group type="102" attributes="0">
+                          <EmptySpace min="10" pref="10" max="-2" attributes="0"/>
+                          <Group type="103" groupAlignment="0" max="-2" attributes="0">
+                              <Component id="jPanel3" max="32767" attributes="0"/>
+                              <Component id="jPanel5" pref="320" max="32767" attributes="0"/>
+                          </Group>
+                      </Group>
+                      <Group type="102" alignment="0" attributes="0">
+                          <EmptySpace min="-2" pref="88" max="-2" attributes="0"/>
+                          <Component id="jPanel4" min="-2" max="-2" attributes="0"/>
+                      </Group>
                   </Group>
-                  <EmptySpace type="unrelated" max="-2" attributes="0"/>
+                  <EmptySpace min="-2" pref="12" max="-2" attributes="0"/>
                   <Component id="jScrollPane3" min="-2" pref="330" max="-2" attributes="0"/>
                   <EmptySpace min="-2" pref="465" max="-2" attributes="0"/>
                   <Component id="jPanel2" min="-2" max="-2" attributes="0"/>
@@ -685,7 +556,7 @@
             <Container class="javax.swing.JScrollPane" name="jScrollPane4">
               <Constraints>
                 <Constraint layoutClass="org.netbeans.modules.form.compat2.layouts.DesignAbsoluteLayout" value="org.netbeans.modules.form.compat2.layouts.DesignAbsoluteLayout$AbsoluteConstraintsDescription">
-                  <AbsoluteConstraints x="0" y="0" width="1000" height="320"/>
+                  <AbsoluteConstraints x="0" y="0" width="930" height="320"/>
                 </Constraint>
               </Constraints>
 
@@ -702,6 +573,9 @@
                           <Color PropertyName="color" blue="ff" green="ff" red="ff" type="rgb"/>
                         </LineBorder>
                       </Border>
+                    </Property>
+                    <Property name="font" type="java.awt.Font" editor="org.netbeans.beaninfo.editors.FontEditor">
+                      <Font name="Dialog" size="14" style="0"/>
                     </Property>
                     <Property name="foreground" type="java.awt.Color" editor="org.netbeans.beaninfo.editors.ColorEditor">
                       <Color blue="ff" green="ff" red="ff" type="rgb"/>
@@ -846,6 +720,9 @@
                 <Property name="iconTextGap" type="int" value="18"/>
                 <Property name="inheritsPopupMenu" type="boolean" value="true"/>
               </Properties>
+              <Events>
+                <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="btnColorActionPerformed"/>
+              </Events>
             </Component>
           </SubComponents>
         </Container>
@@ -876,6 +753,109 @@
                 <Property name="caretColor" type="java.awt.Color" editor="org.netbeans.beaninfo.editors.ColorEditor">
                   <Color blue="ff" green="ff" red="ff" type="rgb"/>
                 </Property>
+              </Properties>
+            </Component>
+          </SubComponents>
+        </Container>
+        <Container class="javax.swing.JPanel" name="jPanel4">
+          <Properties>
+            <Property name="background" type="java.awt.Color" editor="org.netbeans.beaninfo.editors.ColorEditor">
+              <Color blue="33" green="33" red="33" type="rgb"/>
+            </Property>
+            <Property name="border" type="javax.swing.border.Border" editor="org.netbeans.modules.form.editors2.BorderEditor">
+              <Border info="org.netbeans.modules.form.compat2.border.LineBorderInfo">
+                <LineBorder roundedCorners="true" thickness="3">
+                  <Color PropertyName="color" blue="ff" green="ff" red="ff" type="rgb"/>
+                </LineBorder>
+              </Border>
+            </Property>
+          </Properties>
+
+          <Layout>
+            <DimensionLayout dim="0">
+              <Group type="103" groupAlignment="0" attributes="0">
+                  <Group type="102" attributes="0">
+                      <EmptySpace max="-2" attributes="0"/>
+                      <Group type="103" groupAlignment="0" attributes="0">
+                          <Component id="lblLinea" alignment="0" min="-2" pref="47" max="-2" attributes="0"/>
+                          <Component id="lblColumna" alignment="0" min="-2" pref="40" max="-2" attributes="0"/>
+                      </Group>
+                      <EmptySpace pref="28" max="32767" attributes="0"/>
+                  </Group>
+                  <Group type="102" attributes="0">
+                      <Group type="103" groupAlignment="0" attributes="0">
+                          <Component id="jLabel2" alignment="0" min="-2" pref="75" max="-2" attributes="0"/>
+                          <Component id="jLabel1" alignment="0" min="-2" pref="65" max="-2" attributes="0"/>
+                      </Group>
+                      <EmptySpace min="0" pref="0" max="32767" attributes="0"/>
+                  </Group>
+              </Group>
+            </DimensionLayout>
+            <DimensionLayout dim="1">
+              <Group type="103" groupAlignment="0" attributes="0">
+                  <Group type="102" alignment="0" attributes="0">
+                      <EmptySpace min="-2" pref="18" max="-2" attributes="0"/>
+                      <Component id="jLabel1" min="-2" max="-2" attributes="0"/>
+                      <EmptySpace max="-2" attributes="0"/>
+                      <Component id="lblLinea" min="-2" max="-2" attributes="0"/>
+                      <EmptySpace min="-2" pref="27" max="-2" attributes="0"/>
+                      <Component id="jLabel2" min="-2" max="-2" attributes="0"/>
+                      <EmptySpace max="-2" attributes="0"/>
+                      <Component id="lblColumna" min="-2" max="-2" attributes="0"/>
+                      <EmptySpace pref="18" max="32767" attributes="0"/>
+                  </Group>
+              </Group>
+            </DimensionLayout>
+          </Layout>
+          <SubComponents>
+            <Component class="javax.swing.JLabel" name="jLabel1">
+              <Properties>
+                <Property name="background" type="java.awt.Color" editor="org.netbeans.beaninfo.editors.ColorEditor">
+                  <Color blue="0" green="0" red="0" type="rgb"/>
+                </Property>
+                <Property name="font" type="java.awt.Font" editor="org.netbeans.beaninfo.editors.FontEditor">
+                  <Font name="Open Sans" size="15" style="3"/>
+                </Property>
+                <Property name="foreground" type="java.awt.Color" editor="org.netbeans.beaninfo.editors.ColorEditor">
+                  <Color blue="66" green="0" red="ff" type="rgb"/>
+                </Property>
+                <Property name="text" type="java.lang.String" value="Linea:"/>
+              </Properties>
+            </Component>
+            <Component class="javax.swing.JLabel" name="lblLinea">
+              <Properties>
+                <Property name="font" type="java.awt.Font" editor="org.netbeans.beaninfo.editors.FontEditor">
+                  <Font name="Open Sans" size="16" style="1"/>
+                </Property>
+                <Property name="foreground" type="java.awt.Color" editor="org.netbeans.beaninfo.editors.ColorEditor">
+                  <Color blue="ff" green="ff" red="ff" type="rgb"/>
+                </Property>
+                <Property name="text" type="java.lang.String" value="lin"/>
+              </Properties>
+            </Component>
+            <Component class="javax.swing.JLabel" name="jLabel2">
+              <Properties>
+                <Property name="background" type="java.awt.Color" editor="org.netbeans.beaninfo.editors.ColorEditor">
+                  <Color blue="0" green="0" red="0" type="rgb"/>
+                </Property>
+                <Property name="font" type="java.awt.Font" editor="org.netbeans.beaninfo.editors.FontEditor">
+                  <Font name="Open Sans Semibold" size="15" style="3"/>
+                </Property>
+                <Property name="foreground" type="java.awt.Color" editor="org.netbeans.beaninfo.editors.ColorEditor">
+                  <Color blue="66" green="0" red="ff" type="rgb"/>
+                </Property>
+                <Property name="text" type="java.lang.String" value="Columna: "/>
+              </Properties>
+            </Component>
+            <Component class="javax.swing.JLabel" name="lblColumna">
+              <Properties>
+                <Property name="font" type="java.awt.Font" editor="org.netbeans.beaninfo.editors.FontEditor">
+                  <Font name="Open Sans Semibold" size="16" style="1"/>
+                </Property>
+                <Property name="foreground" type="java.awt.Color" editor="org.netbeans.beaninfo.editors.ColorEditor">
+                  <Color blue="ff" green="ff" red="ff" type="rgb"/>
+                </Property>
+                <Property name="text" type="java.lang.String" value="col"/>
               </Properties>
             </Component>
           </SubComponents>

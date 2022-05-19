@@ -6,10 +6,17 @@ import compilerTools.Functions;
 import compilerTools.Production;
 import compilerTools.TextColor;
 import compilerTools.Token;
+import java.awt.AWTException;
 import java.awt.Color;
 import java.awt.Component;
 import java.awt.Graphics;
 import java.awt.Image;
+import java.awt.Robot;
+import java.awt.Toolkit;
+import java.awt.datatransfer.Clipboard;
+import java.awt.datatransfer.DataFlavor;
+import java.awt.datatransfer.StringSelection;
+import java.awt.datatransfer.UnsupportedFlavorException;
 import java.awt.event.ActionEvent;
 import java.awt.event.KeyEvent;
 import java.awt.event.WindowAdapter;
@@ -40,6 +47,8 @@ import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.JTextPane;
 import javax.swing.Timer;
+import javax.swing.event.CaretEvent;
+import javax.swing.event.CaretListener;
 import javax.swing.filechooser.FileNameExtensionFilter;
 import javax.swing.text.AttributeSet;
 import javax.swing.text.BadLocationException;
@@ -65,7 +74,7 @@ public class Control extends javax.swing.JFrame {
     Ver_Imprimir impresora;
     private File ficheroa;
     fondopanel fondo1 = new fondopanel();
-
+    public ContarLineas lines;
     /////////////////////////////////////////////////
     private String title;
     private Directory directorio;
@@ -79,13 +88,15 @@ public class Control extends javax.swing.JFrame {
 
     public Control() {
         this.setContentPane(fondo1);
-
         initComponents();
-        init();
+
         setLocationRelativeTo(null);
         Contar = new ContarLineas(TexPane22);
         jScrollPane4.setRowHeaderView(Contar);
-        //    TexPane22.setLineWrap(true);
+        init();
+
+        posicionPuntero();
+//    TexPane22.setLineWrap(true);
         //   colors();
         //    TextareaLineas.setWrapStyleWord(true);
 
@@ -96,21 +107,9 @@ public class Control extends javax.swing.JFrame {
         title = "Prueba"; //INICIA NUMERACIÓN
         setLocationRelativeTo(null);
         setTitle(title);
-        directorio = new Directory(this, TexPane22, title, ".html");
-        addWindowListener(new WindowAdapter() {
-            //@Override
-            public void WindowClosing(WindowEvent e) {
-                directorio.Exit();
-                System.exit(0);
-            }
-        });
-        //Functions.setLineNumberOnJTextComponent(TexPane22); //TERMINA NUMERACIÓN
-        /*timerKeyReleased = new Timer(300, ((e) -> {
-            timerKeyReleased.stop();
-            analisisColor();
-        }));*/  //INICIA TIMER A LA HORA DE SOLTAR TECLA
+
         Functions.setLineNumberOnJTextComponent(TexPane22); //Pone los numeros de linea
-        timerKeyReleased = new Timer((int) (1000 * 0.3), (ActionEvent e) -> {
+        timerKeyReleased = new Timer((int) (1000 * 0.0), (ActionEvent e) -> {
             timerKeyReleased.stop();
 
             int posicion = TexPane22.getCaretPosition();
@@ -122,6 +121,7 @@ public class Control extends javax.swing.JFrame {
         });
         Functions.insertAsteriskInName(this, TexPane22, () -> {
             timerKeyReleased.restart();
+
         });
         tokens = new ArrayList<>();
         errores = new ArrayList<>();
@@ -132,15 +132,6 @@ public class Control extends javax.swing.JFrame {
             "oeste", "sur", "norte", "pintar"}, TexPane22, () -> {                          //FUNCION AUTOCOMPLETAR
             timerKeyReleased.restart();
         });
-
-    }
-
-    private void ClearFields() {
-        tokens.clear();
-        errores.clear();
-        identProd.clear();
-        identificadores.clear();
-        codeHasBeenCompiled = false;
 
     }
 
@@ -161,6 +152,7 @@ public class Control extends javax.swing.JFrame {
                     break;
                 }
                 textsColor.add(textColor);
+
             }
         } catch (FileNotFoundException ex) {
             System.out.println("El archivo no pudo ser encontrado... " + ex.getMessage());
@@ -168,6 +160,7 @@ public class Control extends javax.swing.JFrame {
             System.out.println("Error al escribir en el archivo... " + ex.getMessage());
         }
         Functions.colorTextPane(textsColor, TexPane22, new Color(250, 250, 250));
+
     }
 
     @SuppressWarnings("unchecked")
@@ -185,6 +178,11 @@ public class Control extends javax.swing.JFrame {
         btnColor = new javax.swing.JButton();
         jScrollPane3 = new javax.swing.JScrollPane();
         txtAreaGrafico = new javax.swing.JTextArea();
+        jPanel4 = new javax.swing.JPanel();
+        jLabel1 = new javax.swing.JLabel();
+        lblLinea = new javax.swing.JLabel();
+        jLabel2 = new javax.swing.JLabel();
+        lblColumna = new javax.swing.JLabel();
         jMenuBar1 = new javax.swing.JMenuBar();
         jMenu1 = new javax.swing.JMenu();
         itemAbrir = new javax.swing.JMenuItem();
@@ -196,17 +194,9 @@ public class Control extends javax.swing.JFrame {
         jMenu2 = new javax.swing.JMenu();
         itemCopiar = new javax.swing.JMenuItem();
         itemPegar = new javax.swing.JMenuItem();
-        itemDesacher = new javax.swing.JMenuItem();
-        itemEliminar = new javax.swing.JMenuItem();
         itemReemplazar = new javax.swing.JMenuItem();
         iteSeleccionar = new javax.swing.JMenuItem();
         itemBuscar = new javax.swing.JMenuItem();
-        jMenu4 = new javax.swing.JMenu();
-        jMenuItem14 = new javax.swing.JMenuItem();
-        jMenu5 = new javax.swing.JMenu();
-        jMenu3 = new javax.swing.JMenu();
-        itemAlejar = new javax.swing.JMenuItem();
-        itemAcercar = new javax.swing.JMenuItem();
         jMenu6 = new javax.swing.JMenu();
         jMenuItem17 = new javax.swing.JMenuItem();
         jMenuItem18 = new javax.swing.JMenuItem();
@@ -232,6 +222,7 @@ public class Control extends javax.swing.JFrame {
 
         TexPane22.setBackground(new java.awt.Color(51, 51, 51));
         TexPane22.setBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(255, 255, 255), 2));
+        TexPane22.setFont(new java.awt.Font("Dialog", 0, 14)); // NOI18N
         TexPane22.setForeground(new java.awt.Color(255, 255, 255));
         TexPane22.setCaretColor(new java.awt.Color(255, 255, 255));
         TexPane22.addKeyListener(new java.awt.event.KeyAdapter() {
@@ -242,7 +233,7 @@ public class Control extends javax.swing.JFrame {
         jScrollPane4.setViewportView(TexPane22);
 
         jPanel3.add(jScrollPane4);
-        jScrollPane4.setBounds(0, 0, 1000, 320);
+        jScrollPane4.setBounds(0, 0, 930, 320);
 
         jPanel5.setBackground(new java.awt.Color(0, 153, 153));
         jPanel5.setBorder(javax.swing.BorderFactory.createTitledBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(255, 255, 255), 3), "Opciones", javax.swing.border.TitledBorder.CENTER, javax.swing.border.TitledBorder.TOP, new java.awt.Font("Dialog", 3, 20), new java.awt.Color(0, 0, 0))); // NOI18N
@@ -289,6 +280,11 @@ public class Control extends javax.swing.JFrame {
         btnColor.setHorizontalAlignment(javax.swing.SwingConstants.LEFT);
         btnColor.setIconTextGap(18);
         btnColor.setInheritsPopupMenu(true);
+        btnColor.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnColorActionPerformed(evt);
+            }
+        });
 
         javax.swing.GroupLayout jPanel5Layout = new javax.swing.GroupLayout(jPanel5);
         jPanel5.setLayout(jPanel5Layout);
@@ -322,32 +318,92 @@ public class Control extends javax.swing.JFrame {
         txtAreaGrafico.setCaretColor(new java.awt.Color(255, 255, 255));
         jScrollPane3.setViewportView(txtAreaGrafico);
 
+        jPanel4.setBackground(new java.awt.Color(51, 51, 51));
+        jPanel4.setBorder(new javax.swing.border.LineBorder(new java.awt.Color(255, 255, 255), 3, true));
+
+        jLabel1.setBackground(new java.awt.Color(0, 0, 0));
+        jLabel1.setFont(new java.awt.Font("Open Sans", 3, 15)); // NOI18N
+        jLabel1.setForeground(new java.awt.Color(255, 0, 102));
+        jLabel1.setText("Linea:");
+
+        lblLinea.setFont(new java.awt.Font("Open Sans", 1, 16)); // NOI18N
+        lblLinea.setForeground(new java.awt.Color(255, 255, 255));
+        lblLinea.setText("lin");
+
+        jLabel2.setBackground(new java.awt.Color(0, 0, 0));
+        jLabel2.setFont(new java.awt.Font("Open Sans Semibold", 3, 15)); // NOI18N
+        jLabel2.setForeground(new java.awt.Color(255, 0, 102));
+        jLabel2.setText("Columna: ");
+
+        lblColumna.setFont(new java.awt.Font("Open Sans Semibold", 1, 16)); // NOI18N
+        lblColumna.setForeground(new java.awt.Color(255, 255, 255));
+        lblColumna.setText("col");
+
+        javax.swing.GroupLayout jPanel4Layout = new javax.swing.GroupLayout(jPanel4);
+        jPanel4.setLayout(jPanel4Layout);
+        jPanel4Layout.setHorizontalGroup(
+            jPanel4Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(jPanel4Layout.createSequentialGroup()
+                .addContainerGap()
+                .addGroup(jPanel4Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(lblLinea, javax.swing.GroupLayout.PREFERRED_SIZE, 47, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(lblColumna, javax.swing.GroupLayout.PREFERRED_SIZE, 40, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addContainerGap(28, Short.MAX_VALUE))
+            .addGroup(jPanel4Layout.createSequentialGroup()
+                .addGroup(jPanel4Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(jLabel2, javax.swing.GroupLayout.PREFERRED_SIZE, 75, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(jLabel1, javax.swing.GroupLayout.PREFERRED_SIZE, 65, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addGap(0, 0, Short.MAX_VALUE))
+        );
+        jPanel4Layout.setVerticalGroup(
+            jPanel4Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(jPanel4Layout.createSequentialGroup()
+                .addGap(18, 18, 18)
+                .addComponent(jLabel1)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addComponent(lblLinea)
+                .addGap(27, 27, 27)
+                .addComponent(jLabel2)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addComponent(lblColumna)
+                .addContainerGap(18, Short.MAX_VALUE))
+        );
+
         javax.swing.GroupLayout jPanel1Layout = new javax.swing.GroupLayout(jPanel1);
         jPanel1.setLayout(jPanel1Layout);
         jPanel1Layout.setHorizontalGroup(
             jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(jPanel1Layout.createSequentialGroup()
-                .addGap(286, 286, 286)
-                .addComponent(jPanel2, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
-            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel1Layout.createSequentialGroup()
-                .addGap(28, 28, 28)
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(jPanel1Layout.createSequentialGroup()
-                        .addComponent(jPanel3, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                        .addGap(26, 26, 26)
-                        .addComponent(jPanel5, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                    .addComponent(jScrollPane3, javax.swing.GroupLayout.PREFERRED_SIZE, 1244, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addContainerGap(35, Short.MAX_VALUE))
+                        .addGap(286, 286, 286)
+                        .addComponent(jPanel2, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addGroup(jPanel1Layout.createSequentialGroup()
+                        .addGap(28, 28, 28)
+                        .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                            .addComponent(jScrollPane3, javax.swing.GroupLayout.PREFERRED_SIZE, 1269, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addGroup(jPanel1Layout.createSequentialGroup()
+                                .addComponent(jPanel3, javax.swing.GroupLayout.PREFERRED_SIZE, 922, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                                .addComponent(jPanel4, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                                .addComponent(jPanel5, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addGap(8, 8, 8)))))
+                .addContainerGap(13, Short.MAX_VALUE))
         );
         jPanel1Layout.setVerticalGroup(
             jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(jPanel1Layout.createSequentialGroup()
-                .addGap(10, 10, 10)
-                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                    .addComponent(jPanel3, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                    .addComponent(jPanel5, javax.swing.GroupLayout.PREFERRED_SIZE, 320, Short.MAX_VALUE))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addGroup(jPanel1Layout.createSequentialGroup()
+                        .addGap(10, 10, 10)
+                        .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                            .addComponent(jPanel3, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                            .addComponent(jPanel5, javax.swing.GroupLayout.PREFERRED_SIZE, 320, Short.MAX_VALUE)))
+                    .addGroup(jPanel1Layout.createSequentialGroup()
+                        .addGap(88, 88, 88)
+                        .addComponent(jPanel4, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                .addGap(12, 12, 12)
                 .addComponent(jScrollPane3, javax.swing.GroupLayout.PREFERRED_SIZE, 330, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addGap(465, 465, 465)
                 .addComponent(jPanel2, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
@@ -465,6 +521,11 @@ public class Control extends javax.swing.JFrame {
         itemCopiar.setIcon(new javax.swing.ImageIcon(getClass().getResource("/Imagenes/documents.png"))); // NOI18N
         itemCopiar.setText("Copiar");
         itemCopiar.setBorder(new javax.swing.border.LineBorder(new java.awt.Color(255, 255, 255), 1, true));
+        itemCopiar.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                itemCopiarActionPerformed(evt);
+            }
+        });
         jMenu2.add(itemCopiar);
 
         itemPegar.setAccelerator(javax.swing.KeyStroke.getKeyStroke(java.awt.event.KeyEvent.VK_P, java.awt.event.InputEvent.CTRL_DOWN_MASK));
@@ -473,24 +534,12 @@ public class Control extends javax.swing.JFrame {
         itemPegar.setForeground(new java.awt.Color(0, 0, 0));
         itemPegar.setIcon(new javax.swing.ImageIcon(getClass().getResource("/Imagenes/files.png"))); // NOI18N
         itemPegar.setText("Pegar");
+        itemPegar.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                itemPegarActionPerformed(evt);
+            }
+        });
         jMenu2.add(itemPegar);
-
-        itemDesacher.setAccelerator(javax.swing.KeyStroke.getKeyStroke(java.awt.event.KeyEvent.VK_Z, java.awt.event.InputEvent.CTRL_DOWN_MASK));
-        itemDesacher.setBackground(new java.awt.Color(204, 255, 255));
-        itemDesacher.setFont(new java.awt.Font("Dialog", 3, 12)); // NOI18N
-        itemDesacher.setForeground(new java.awt.Color(0, 0, 0));
-        itemDesacher.setIcon(new javax.swing.ImageIcon(getClass().getResource("/Imagenes/undo.png"))); // NOI18N
-        itemDesacher.setText("Desacher");
-        itemDesacher.setBorder(new javax.swing.border.LineBorder(new java.awt.Color(255, 255, 255), 1, true));
-        jMenu2.add(itemDesacher);
-
-        itemEliminar.setAccelerator(javax.swing.KeyStroke.getKeyStroke(java.awt.event.KeyEvent.VK_T, java.awt.event.InputEvent.CTRL_DOWN_MASK));
-        itemEliminar.setBackground(new java.awt.Color(255, 255, 255));
-        itemEliminar.setFont(new java.awt.Font("Dialog", 3, 12)); // NOI18N
-        itemEliminar.setForeground(new java.awt.Color(0, 0, 0));
-        itemEliminar.setIcon(new javax.swing.ImageIcon(getClass().getResource("/Imagenes/trash.png"))); // NOI18N
-        itemEliminar.setText("Eliminar");
-        jMenu2.add(itemEliminar);
 
         itemReemplazar.setAccelerator(javax.swing.KeyStroke.getKeyStroke(java.awt.event.KeyEvent.VK_R, java.awt.event.InputEvent.CTRL_DOWN_MASK));
         itemReemplazar.setBackground(new java.awt.Color(204, 255, 255));
@@ -530,55 +579,6 @@ public class Control extends javax.swing.JFrame {
 
         jMenuBar1.add(jMenu2);
 
-        jMenu4.setBackground(new java.awt.Color(0, 153, 153));
-        jMenu4.setForeground(new java.awt.Color(0, 0, 0));
-        jMenu4.setIcon(new javax.swing.ImageIcon(getClass().getResource("/Imagenes/simple-data-format.png"))); // NOI18N
-        jMenu4.setText("Formato");
-        jMenu4.setFont(new java.awt.Font("Dialog", 1, 15)); // NOI18N
-        jMenu4.setIconTextGap(12);
-
-        jMenuItem14.setBackground(new java.awt.Color(204, 255, 255));
-        jMenuItem14.setForeground(new java.awt.Color(0, 0, 0));
-        jMenuItem14.setText("Formato");
-        jMenu4.add(jMenuItem14);
-
-        jMenuBar1.add(jMenu4);
-
-        jMenu5.setBackground(new java.awt.Color(0, 153, 153));
-        jMenu5.setForeground(new java.awt.Color(0, 0, 0));
-        jMenu5.setIcon(new javax.swing.ImageIcon(getClass().getResource("/Imagenes/lupa.png"))); // NOI18N
-        jMenu5.setText("Ver");
-        jMenu5.setFont(new java.awt.Font("Dialog", 1, 15)); // NOI18N
-        jMenu5.setIconTextGap(12);
-
-        jMenu3.setBackground(new java.awt.Color(204, 255, 255));
-        jMenu3.setForeground(new java.awt.Color(0, 0, 0));
-        jMenu3.setText("Zoom");
-
-        itemAlejar.setAccelerator(javax.swing.KeyStroke.getKeyStroke(java.awt.event.KeyEvent.VK_MINUS, java.awt.event.InputEvent.CTRL_DOWN_MASK));
-        itemAlejar.setBackground(new java.awt.Color(204, 255, 255));
-        itemAlejar.setForeground(new java.awt.Color(0, 0, 0));
-        itemAlejar.setIcon(new javax.swing.ImageIcon(getClass().getResource("/Imagenes/zoom-out.png"))); // NOI18N
-        itemAlejar.setText("Alejar");
-        jMenu3.add(itemAlejar);
-
-        itemAcercar.setAccelerator(javax.swing.KeyStroke.getKeyStroke(java.awt.event.KeyEvent.VK_PLUS, java.awt.event.InputEvent.CTRL_DOWN_MASK));
-        itemAcercar.setBackground(new java.awt.Color(204, 255, 255));
-        itemAcercar.setForeground(new java.awt.Color(0, 0, 0));
-        itemAcercar.setIcon(new javax.swing.ImageIcon(getClass().getResource("/Imagenes/zoom-out.png"))); // NOI18N
-        itemAcercar.setText("Acercar");
-        itemAcercar.setBorder(new javax.swing.border.LineBorder(new java.awt.Color(255, 255, 255), 1, true));
-        itemAcercar.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                itemAcercarActionPerformed(evt);
-            }
-        });
-        jMenu3.add(itemAcercar);
-
-        jMenu5.add(jMenu3);
-
-        jMenuBar1.add(jMenu5);
-
         jMenu6.setBackground(new java.awt.Color(0, 153, 153));
         jMenu6.setForeground(new java.awt.Color(0, 0, 0));
         jMenu6.setText("Ayuda");
@@ -590,6 +590,11 @@ public class Control extends javax.swing.JFrame {
         jMenuItem17.setForeground(new java.awt.Color(0, 0, 0));
         jMenuItem17.setIcon(new javax.swing.ImageIcon(getClass().getResource("/Imagenes/question.png"))); // NOI18N
         jMenuItem17.setText("Acerca de ayuda");
+        jMenuItem17.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jMenuItem17ActionPerformed(evt);
+            }
+        });
         jMenu6.add(jMenuItem17);
 
         jMenuItem18.setAccelerator(javax.swing.KeyStroke.getKeyStroke(java.awt.event.KeyEvent.VK_F2, 0));
@@ -598,6 +603,11 @@ public class Control extends javax.swing.JFrame {
         jMenuItem18.setIcon(new javax.swing.ImageIcon(getClass().getResource("/Imagenes/testing.png"))); // NOI18N
         jMenuItem18.setText("Versión de la app");
         jMenuItem18.setBorder(new javax.swing.border.LineBorder(new java.awt.Color(255, 255, 255), 1, true));
+        jMenuItem18.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jMenuItem18ActionPerformed(evt);
+            }
+        });
         jMenu6.add(jMenuItem18);
 
         jMenuBar1.add(jMenu6);
@@ -625,17 +635,25 @@ public class Control extends javax.swing.JFrame {
         System.exit(0);
     }//GEN-LAST:event_btnSalirActionPerformed
 
-    private void itemAcercarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_itemAcercarActionPerformed
-        // TODO add your handling code here:
-    }//GEN-LAST:event_itemAcercarActionPerformed
+    public void enter() {
+        Robot robot = null;
+        try {
+            robot = new Robot();
+        } catch (AWTException ex) {
+            Logger.getLogger(Control.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        robot.keyPress(KeyEvent.VK_ENTER); // Simula presionar la tecla
+    }
 
     private void itemAbrirActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_itemAbrirActionPerformed
+
         JFileChooser fc = new JFileChooser();
         FileNameExtensionFilter filtro = new FileNameExtensionFilter(".html", ".txt", "html", "txt");
         fc.setFileFilter(filtro);
         fc.setMultiSelectionEnabled(false);
         fc.setFileSelectionMode(JFileChooser.FILES_ONLY);
         int seleccion = fc.showOpenDialog(this.getContentPane());
+
         if (seleccion == JFileChooser.APPROVE_OPTION) {
             ficheroa = fc.getSelectedFile();
             try (FileReader fr = new FileReader(this.ficheroa)) {
@@ -646,12 +664,17 @@ public class Control extends javax.swing.JFrame {
                     valor = fr.read();
                 }
                 TexPane22.setText(cadena);
+
             } catch (FileNotFoundException ex) {
                 System.out.println(ex.getMessage());
             } catch (IOException ex) {
                 System.out.println(ex.getMessage());
             }
+
         }
+        analisisColor();
+        //   robot.keyRelease(KeyEvent.VK_ENTER); // Simula soltar la tecla
+        // enter();
 
     }//GEN-LAST:event_itemAbrirActionPerformed
 //METODO PARA ENCONTRAR LAS ULTIMAS CADENAS
@@ -787,6 +810,20 @@ public class Control extends javax.swing.JFrame {
     }
     private void itemImprimirActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_itemImprimirActionPerformed
         // TODO add your handling code here:
+
+        /*
+        try {
+            Boolean ppt = TexPane22.print();
+            if (ppt) {
+                JOptionPane.showMessageDialog(null, "Imprimiedo...");
+            } else {
+                JOptionPane.showMessageDialog(null, ":c");
+            }
+        } catch (PrinterException ex) {
+            System.out.println("Error... " + ex);
+        }
+
+         */
         String AreaEntrada = this.TexPane22.getText();
         String AreaSalida = this.txtAreaGrafico.getText();
         String[] options = {"Imprimir Entrada", "Imprimir Salida"};
@@ -816,6 +853,7 @@ public class Control extends javax.swing.JFrame {
             JOptionPane.showMessageDialog(null, "Cancelado ", "Cancelar", JOptionPane.INFORMATION_MESSAGE, new ImageIcon("src/Imagenes/Error1.png"));
 
         }
+
 
     }//GEN-LAST:event_itemImprimirActionPerformed
 
@@ -922,7 +960,74 @@ public class Control extends javax.swing.JFrame {
                 setTitle(getTitle() + "*");
             }
         }
+
     }//GEN-LAST:event_TexPane22KeyReleased
+
+    private void itemCopiarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_itemCopiarActionPerformed
+        String seleccionar = TexPane22.getSelectedText();
+        Clipboard portapapeles = Toolkit.getDefaultToolkit().getSystemClipboard();
+        StringSelection seleccionado = new StringSelection(seleccionar);
+        portapapeles.setContents(seleccionado, seleccionado);
+        TexPane22.cut();
+        JOptionPane.showMessageDialog(null, "texto cortado: ");
+    }//GEN-LAST:event_itemCopiarActionPerformed
+
+    private void itemPegarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_itemPegarActionPerformed
+        String pegado = "";
+        Clipboard portapapeles = Toolkit.getDefaultToolkit().getSystemClipboard();
+        //Transferable contenido=portapapeles.getContents(this);
+
+        try {
+            pegado = (String) portapapeles.getContents(this).getTransferData(DataFlavor.stringFlavor);
+            //pegado = (String) contenido.getTransferData(DataFlavor.stringFlavor);
+        } catch (UnsupportedFlavorException ex) {
+            Logger.getLogger(Control.class.getName()).log(Level.SEVERE, null, ex);
+        } catch (IOException ex) {
+            Logger.getLogger(Control.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        //txta_texto.getMousePosition();
+
+        // TexPane22.append(" " + pegado);
+        JOptionPane.showMessageDialog(null, "texto pegado: ");
+    }//GEN-LAST:event_itemPegarActionPerformed
+
+    private void btnColorActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnColorActionPerformed
+
+    }//GEN-LAST:event_btnColorActionPerformed
+
+    private void jMenuItem17ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMenuItem17ActionPerformed
+        Ayuda ver = new Ayuda();
+        ver.show();
+    }//GEN-LAST:event_jMenuItem17ActionPerformed
+    private void posicionPuntero() {
+        TexPane22.addCaretListener(new CaretListener() {
+
+            @Override
+            public void caretUpdate(CaretEvent e) {
+                int pos = e.getDot();
+                int fila = 1, columna = 0;
+                int ultimalinea = -1;
+                String text = TexPane22.getText().replaceAll("\r", "");
+
+                for (int i = 0; i < pos; i++) {
+                    if (text.charAt(i) == 10) {
+                        fila++;
+                        ultimalinea = i;
+                    }
+                }
+
+                columna = pos - ultimalinea;
+                lblLinea.setText(fila + "");
+                lblColumna.setText(columna + "");
+            }
+        });
+
+    }
+
+    private void jMenuItem18ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMenuItem18ActionPerformed
+        JOptionPane.showMessageDialog(null, "MiniText 1.20.21.001", "Version (BETA)", JOptionPane.INFORMATION_MESSAGE, new ImageIcon("src/Imagenes/refresh.png"));
+
+    }//GEN-LAST:event_jMenuItem18ActionPerformed
 
     /**
      * @param args the command line arguments
@@ -971,12 +1076,8 @@ public class Control extends javax.swing.JFrame {
     private javax.swing.JButton btnSalir;
     private javax.swing.JMenuItem iteSeleccionar;
     private javax.swing.JMenuItem itemAbrir;
-    private javax.swing.JMenuItem itemAcercar;
-    private javax.swing.JMenuItem itemAlejar;
     private javax.swing.JMenuItem itemBuscar;
     private javax.swing.JMenuItem itemCopiar;
-    private javax.swing.JMenuItem itemDesacher;
-    private javax.swing.JMenuItem itemEliminar;
     private javax.swing.JMenuItem itemGuardar;
     private javax.swing.JMenuItem itemGuardarcomo;
     private javax.swing.JMenuItem itemImprimir;
@@ -984,22 +1085,23 @@ public class Control extends javax.swing.JFrame {
     private javax.swing.JMenuItem itemPegar;
     private javax.swing.JMenuItem itemReemplazar;
     private javax.swing.JMenuItem itemSalir;
+    private javax.swing.JLabel jLabel1;
+    private javax.swing.JLabel jLabel2;
     private javax.swing.JMenu jMenu1;
     private javax.swing.JMenu jMenu2;
-    private javax.swing.JMenu jMenu3;
-    private javax.swing.JMenu jMenu4;
-    private javax.swing.JMenu jMenu5;
     private javax.swing.JMenu jMenu6;
     private javax.swing.JMenuBar jMenuBar1;
-    private javax.swing.JMenuItem jMenuItem14;
     private javax.swing.JMenuItem jMenuItem17;
     private javax.swing.JMenuItem jMenuItem18;
     private javax.swing.JPanel jPanel1;
     private javax.swing.JPanel jPanel2;
     private javax.swing.JPanel jPanel3;
+    private javax.swing.JPanel jPanel4;
     private javax.swing.JPanel jPanel5;
     private javax.swing.JScrollPane jScrollPane3;
     private javax.swing.JScrollPane jScrollPane4;
+    private javax.swing.JLabel lblColumna;
+    private javax.swing.JLabel lblLinea;
     private javax.swing.JTextArea txtAreaGrafico;
     // End of variables declaration//GEN-END:variables
  class fondopanel extends JPanel {
